@@ -1,0 +1,27 @@
+{
+  "name": "@cf-demo/api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply cf-demo-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply cf-demo-db --remote",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "aws4fetch": "^1.0.20",
+    "drizzle-orm": "^0.45.3",
+    "hono": "^4.13.11",
+    "jose": "^6.2.12"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260929.1",
+    "drizzle-kit": "^0.31.11",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.143.0"
+  }
+}

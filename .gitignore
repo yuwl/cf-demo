@@ -1,0 +1,31 @@
+node_modules/
+dist/
+build/
+
+# Cloudflare
+.wrangler/
+.dev.vars
+.dev.vars.*
+# 但示例文件要进仓库 —— 上面的 .dev.vars.* 会把它一起匹配掉，
+# 少了这行，新克隆下来的仓库里就没有 .dev.vars.example，README 里的 cp 会失败
+!.dev.vars.example
+
+# 环境变量（只提交 .env.example）
+.env
+.env.local
+.env.*.local
+
+# 日志与临时文件
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+tmp/
+
+# 编辑器 / 系统
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+desktop.ini

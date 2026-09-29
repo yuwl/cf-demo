@@ -1,0 +1,26 @@
+{
+  "name": "cf-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "带登录的留言板 —— Cloudflare Pages + Workers + D1 + R2 + Resend 全栈 demo",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm run dev -w @cf-demo/api",
+    "dev:web": "npm run dev -w @cf-demo/web",
+    "build": "npm run build -w @cf-demo/web",
+    "typecheck": "npm run typecheck -w @cf-demo/api && npm run typecheck -w @cf-demo/web",
+    "db:generate": "npm run db:generate -w @cf-demo/api",
+    "db:migrate:local": "npm run db:migrate:local -w @cf-demo/api",
+    "db:migrate:remote": "npm run db:migrate:remote -w @cf-demo/api",
+    "deploy:api": "npm run deploy -w @cf-demo/api"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

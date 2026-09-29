@@ -1,0 +1,4 @@
+# Cloudflare Pages 的 SPA 回退规则：
+# 未命中任何静态文件的路径统一交给 index.html，由前端路由处理。
+# 存在的静态资源（/assets/*.js 等）不受影响。
+/*    /index.html   200

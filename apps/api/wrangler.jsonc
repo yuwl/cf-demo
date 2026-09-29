@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cf-demo-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    // 生产环境取值。本地开发时 .dev.vars 里的同名变量会覆盖这里，见 .dev.vars.example
+    "APP_BASE_URL": "https://cf-demo-web.pages.dev",
+    "MAIL_FROM": "cf-demo <onboarding@resend.dev>",
+    "R2_BUCKET_NAME": "cf-demo-avatars",
+    // 逗号分隔的 CORS 白名单：线上 Pages 域名 + 本地开发地址
+    "ALLOWED_ORIGINS": "http://localhost:5173,https://cf-demo-web.pages.dev"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cf-demo-db",
+      "database_id": "3584b7b6-0500-4568-b079-04e52442c6e9",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // R2 默认关闭：Cloudflare 要求先绑定支付方式才能启用 R2（免费额度内不扣费）。
+  // 想在 Dashboard 启用 R2 并 `wrangler r2 bucket create cf-demo-avatars` 之后，
+  // 把下面这段的注释去掉再重新部署，头像上传功能即可生效（代码无需改动）。
+  // "r2_buckets": [
+  //   {
+  //     "binding": "BUCKET",
+  //     "bucket_name": "cf-demo-avatars"
+  //   }
+  // ]
+}
