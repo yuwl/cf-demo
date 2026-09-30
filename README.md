@@ -226,6 +226,14 @@ R2 免费额度必须先**绑定支付方式**才能激活，否则 `wrangler r2
 
 之后 push 到 `main` 且改动落在 `apps/api/` 时，`.github/workflows/deploy-api.yml` 会自动跑迁移并部署 Worker。
 
+> **当前状态：这两个 secret 还没配，所以 CI 从未运行过（运行记录为 0）。** 在配上之前，改后端要手工部署：
+>
+> ```bash
+> npm run deploy:api          # 等价于 cd apps/api && wrangler deploy
+> ```
+>
+> 另外，工作流的触发条件带了 `paths` 过滤，只改 `README.md` / `.gitignore` / `apps/web/**` **不会**触发它。需要时可以在 Actions 页面点 **Run workflow** 手动触发（工作流里有 `workflow_dispatch`）。
+
 ---
 
 ## 注册口令
