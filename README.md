@@ -349,6 +349,40 @@ Workers 免费版单次请求只有 **10ms CPU** 额度。纯 JS 实现的 bcryp
 
 ---
 
+## 仓库可见性：为什么这个仓库保持公开
+
+**这个仓库是公开的，而且不打算改成私有。** 判断依据如下，将来若有人（包括未来的我）想改，先看这一段。
+
+**仓库里没有凭据。** 对当前全部已跟踪文件、以及全部提交历史做过敏感值扫描（API key、私钥、JWT secret、注册口令），零命中。唯一出现在仓库里的「敏感长相」的值是 `apps/api/wrangler.jsonc` 里的 `database_id`，但它**不是凭据**：它是 D1 数据库的标识符，必须写进配置才能部署，而**没有 Cloudflare API Token 的话，拿到这个 id 也读不到任何数据**。Cloudflare 账号 ID 不在仓库里（它在被 gitignore 的 `.dev.vars`）。
+
+**私有化挡不住真正想访问服务的人。** `cf-demo-web.pages.dev` 和 `cf-demo-api.tiger09527.workers.dev` 是应用本身的地址，无论仓库是公开还是私有，任何人都能直接访问。改私有只能藏源码，藏不住服务。
+
+**改私有有两个实际代价：**
+
+| 影响面 | 公开仓库 | 私有仓库 |
+| --- | --- | --- |
+| GitHub Actions | 标准托管 runner **无限免费** | 受配额限制，Free 计划 **2000 分钟/月**，超出且无付款方式会被阻断 |
+| Cloudflare Pages Git 集成 | 可用 | 可用（授权 Cloudflare GitHub App 即可） |
+
+> 注：本项目前端用的是 **Direct Upload**（`wrangler pages deploy dist`），Cloudflare 文档明确写了 Direct Upload **无法再切回** Git 集成，所以「私有化会破坏 Pages 免费自动构建」这条对本项目不成立。
+
+**结论与规则：**
+
+- 保持公开。省下 Actions 配额，也让别人能参考这份 Cloudflare 全栈 demo。
+- **只有在真的把凭据提交进仓库时，才应该转私有** —— 而且顺序是**先轮换那个凭据，再转私有**。事后转私有并不能把已经泄露出去的东西收回来（GitHub 上被 force-push 掉的旧提交，在一段时间内仍能通过 commit SHA 直接访问）。
+- 换句话说：**安全性不应该依赖仓库可见性**。上面那 10 条已知限制里的每一条，都是按「代码完全公开」这个前提设计的。
+
+如果你确实要转私有，一次 API 调用即可（可逆，不影响默认分支）：
+
+```bash
+curl -X PATCH -H "Authorization: Bearer <你的 token>" \
+  -H "Accept: application/vnd.github+json" \
+  https://api.github.com/repos/<owner>/<repo> \
+  -d '{"private": true}'
+```
+
+---
+
 ## 参考
 
 - [Cloudflare Workers 定价](https://developers.cloudflare.com/workers/platform/pricing/)
